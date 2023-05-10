@@ -13,11 +13,11 @@
           SELECT authority_name FROM authority WHERE username = #{username}
      </select>
 
-	<insert id="createUser" parameterType="User">
+	<insert id="joinUser" parameterType="User">
 		INSERT INTO user (username, password, name, isAccountNonExpired,
 		isAccountNonLocked, isCredentialsNonExpired, isEnabled)
-		VALUES (#{username}, #{password}, #{name}, #{isAccountNonExpired},
-		#{isAccountNonLocked}, #{isCredentialsNonExpired}, #{isEnabled})
+		VALUES (#{username}, #{password}, #{name}, #{accountNonExpired},
+		#{accountNonLocked}, #{credentialsNonExpired}, #{enabled})
 	</insert>
 
 	<insert id="createAuthority"
