@@ -9,14 +9,11 @@
     <h1>로그인 성공!!</h1>
     <hr>
     <p>
-        <sec:authorize access="isAuthenticated()">
-			<sec:authentication property="principal" var="user" />
-			<div>${user.name}님</div>
-			<div>${user.authorities}</div>
-		</sec:authorize>
+        <span sec:authentication="principal.name"></span>님 환영합니다~
+          권한 :<span sec:authentication="principal.authorities"></span>
     </p>
-    <sec:authorize access="hasAuthority('ADMIN') or hasAuthority('USER')"><a href="/user/info">내정보</a></sec:authorize><br>
-    <sec:authorize access="hasAuthority('USER')"><a href="/user/admin">admin</a></sec:authorize><br>
+    <a sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" th:href="@{/user/myinfo}">내 정보</a><br>
+    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">admin</a><br>
     <a th:href="@{'/'}">메인으로 이동</a>
 </body>
 </html>

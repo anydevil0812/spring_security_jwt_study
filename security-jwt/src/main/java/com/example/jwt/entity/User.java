@@ -2,14 +2,16 @@ package com.example.jwt.entity;
 
 import java.util.Collection;
 
-import javax.persistence.Entity;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class User implements UserDetails {
 	   
 	private static final long serialVersionUID = -5034392015105278124L;
@@ -21,5 +23,16 @@ public class User implements UserDetails {
     private boolean credentialsNonExpired; // 계정의 비밀번호가 만료되었는지
     private boolean enabled; // 사용가능한 계정인지
     private Collection<? extends GrantedAuthority> authorities; // 계정이 가지고 있는 권한 목록
-	   
+
+	public User(String username, String password, String name, boolean accountNonExpired, boolean accountNonLocked,
+			boolean credentialsNonExpired, boolean enabled) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.accountNonExpired = accountNonExpired;
+		this.accountNonLocked = accountNonLocked;
+		this.credentialsNonExpired = credentialsNonExpired;
+		this.enabled = enabled;
+	}
 }

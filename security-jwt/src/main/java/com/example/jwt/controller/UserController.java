@@ -39,12 +39,11 @@ public class UserController {
     @PostMapping("/user/signup")
     public String execSignup(User user) {
     	List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-//		if(user.getName().equals("admin")) {
-//			authorities.add(new SimpleGrantedAuthority("ADMIN"));
-//		} else {
-//			authorities.add(new SimpleGrantedAuthority("USER"));
-//		}
-    	authorities.add(new SimpleGrantedAuthority("ADMIN"));
+		if(user.getName().contains("admin")) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN")); // ADMIN, USER가 아닌 ROLE_ADMIN, ROLE_USER로 입력!
+		} else {
+			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		}
 		user.setAuthorities(authorities);
 		System.out.println(user);
     	userService.joinUser(user);
@@ -76,7 +75,7 @@ public class UserController {
     }
 
     // 내 정보 페이지
-    @GetMapping("/user/info")
+    @GetMapping("/user/myinfo")
     public String dispMyInfo() {
         return "myinfo";
     }
