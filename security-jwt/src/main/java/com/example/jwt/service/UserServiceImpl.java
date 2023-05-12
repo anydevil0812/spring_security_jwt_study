@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserMapper userMapper;
 	
-	// È¸¿ø°¡ÀÔ
+	// íšŒì›ê°€ì…
 	@Override
 	public void joinUser(User user) {
 		String rawPassword = user.getPassword();
@@ -30,14 +30,14 @@ public class UserServiceImpl implements UserService {
 		userMapper.createAuthority(user);
 	}
 	
-	// È¸¿ø Á¤º¸ Á¶È¸
+	// íšŒì› ì •ë³´ ì¡°íšŒ
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userMapper.readUser(username);
 		if(user==null) {
 			throw new UsernameNotFoundException(username);
 		}
-		// È¸¿ø ±ÇÇÑ Á¶È¸ 
+		// íšŒì› ê¶Œí•œ ì¡°íšŒ
 		List<String> string_authorities = userMapper.readAuthority(username);
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         for (String authority : string_authorities) {
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
    
-   // È¸¿ø »èÁ¦
+   // íšŒì› ì‚­ì œ
    @Override
    public void deleteUser(String username) {
 		userMapper.deleteUser(username);

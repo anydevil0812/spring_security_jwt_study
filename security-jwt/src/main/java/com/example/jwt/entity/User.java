@@ -15,17 +15,17 @@ import lombok.ToString;
 public class User implements UserDetails {
 	   
 	private static final long serialVersionUID = -5034392015105278124L;
-	private String username; // °èÁ¤ id
-    private String password; // °èÁ¤ ºñ¹Ğ¹øÈ£
-    private String name; // °èÁ¤ »ç¿ëÀÚ ÀÌ¸§
-    private boolean accountNonExpired; // ¸¸·áµÈ °èÁ¤ÀÎÁö
-    private boolean accountNonLocked; // Àá°ÜÀÖ´Â °èÁ¤ÀÎÁö
-    private boolean credentialsNonExpired; // °èÁ¤ÀÇ ºñ¹Ğ¹øÈ£°¡ ¸¸·áµÇ¾ú´ÂÁö
-    private boolean enabled; // »ç¿ë°¡´ÉÇÑ °èÁ¤ÀÎÁö
-    private Collection<? extends GrantedAuthority> authorities; // °èÁ¤ÀÌ °¡Áö°í ÀÖ´Â ±ÇÇÑ ¸ñ·Ï
+	private String username; // ê³„ì • id
+    private String password; // ê³„ì • ë¹„ë°€ë²ˆí˜¸
+    private String name; // ê³„ì • ì‚¬ìš©ì ì´ë¦„
+    private boolean accountNonExpired; // ë§Œë£Œëœ ê³„ì •ì¸ì§€
+    private boolean accountNonLocked; // ì ê²¨ìˆëŠ” ê³„ì •ì¸ì§€
+    private boolean credentialsNonExpired; // ê³„ì •ì˜ ë¹„ë°€ë²ˆí˜¸ê°€ ë§Œë£Œë˜ì—ˆëŠ”ì§€
+    private boolean enabled; // ì‚¬ìš©ê°€ëŠ¥í•œ ê³„ì •ì¸ì§€
+    private Collection<? extends GrantedAuthority> authorities; // ê³„ì •ì´ ê°€ì§€ê³  ìˆëŠ” ê¶Œí•œ ëª©ë¡
 
 	public User(String username, String password, String name, boolean accountNonExpired, boolean accountNonLocked,
-			boolean credentialsNonExpired, boolean enabled) {
+			    boolean credentialsNonExpired, boolean enabled) {
 		super();
 		this.username = username;
 		this.password = password;

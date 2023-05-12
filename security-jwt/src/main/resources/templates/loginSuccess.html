@@ -10,7 +10,7 @@
     <hr>
     <p>
         <span sec:authentication="principal.name"></span>님 환영합니다~
-          권한 :<span sec:authentication="principal.authorities"></span>
+                  권한 :<span sec:authentication="principal.authorities"></span>
     </p>
     <a sec:authorize="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')" th:href="@{/user/myinfo}">내 정보</a><br>
     <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">admin</a><br>

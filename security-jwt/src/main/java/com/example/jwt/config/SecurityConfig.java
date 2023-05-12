@@ -16,8 +16,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.example.jwt.service.UserServiceImpl;
 
-@Configuration // È¯°æ º¯¼ö ¼³Á¤¿¡ ´ëÇÑ Å¬·¡½º ÀÓÀ» µî·Ï
-@EnableWebSecurity //  Spring Security¿¡ ´ëÇÑ ¼³Á¤À» ÇÒ Å¬·¡½º¶ó ÁöÁ¤
+@Configuration // í™˜ê²½ ë³€ìˆ˜ ì„¤ì •ì— ëŒ€í•œ í´ë˜ìŠ¤ ì„ì„ ë“±ë¡
+@EnableWebSecurity //  Spring Securityì— ëŒ€í•œ ì„¤ì •ì„ í•  í´ë˜ìŠ¤ë¼ ì§€ì •
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
@@ -25,31 +25,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
-//		http.csrf().disable(); // CSRF ¹Ì»ç¿ë
+//		http.csrf().disable(); // CSRF ë¯¸ì‚¬ìš©
 		
-		http.authorizeRequests() // ÀÎÁõ ÀıÂ÷ ¼³Á¤
-		    .antMatchers("/admin").hasRole("ADMIN") // /adminÀ¸·Î ½ÃÀÛÇÏ´Â °æ·Î´Â ADMIN ±ÇÇÑÀ» °¡Áø »ç¿ëÀÚ¸¸ Á¢±Ù °¡´É
-			.antMatchers("/user/myinfo").hasAnyRole("USER", "ADMIN") // /user/myinfo °æ·Î´Â USER ±ÇÇÑÀ» °¡Áø »ç¿ëÀÚ¸¸ Á¢±Ù °¡´É
-			.anyRequest().permitAll() // ¾Õ¼± °æ·Î ÀÌ¿ÜÀÇ ¸ğµç °æ·Î ÀÎÁõ ¾øÀÌ Á¢±Ù °¡´É
-		.and() // ·Î±×ÀÎ ¼³Á¤
+		http.authorizeRequests() // ì¸ì¦ ì ˆì°¨ ì„¤ì •
+		    .antMatchers("/admin").hasRole("ADMIN") // /adminìœ¼ë¡œ ì‹œì‘í•˜ëŠ” ê²½ë¡œëŠ” ADMIN ê¶Œí•œì„ ê°€ì§„ ì‚¬ìš©ìë§Œ ì ‘ê·¼ ê°€ëŠ¥
+			.antMatchers("/user/myinfo").hasAnyRole("USER", "ADMIN") // /user/myinfo ê²½ë¡œëŠ” USER ê¶Œí•œì„ ê°€ì§„ ì‚¬ìš©ìë§Œ ì ‘ê·¼ ê°€ëŠ¥
+			.anyRequest().permitAll() // ì•ì„  ê²½ë¡œ ì´ì™¸ì˜ ëª¨ë“  ê²½ë¡œ ì¸ì¦ ì—†ì´ ì ‘ê·¼ ê°€ëŠ¥
+		.and() // ë¡œê·¸ì¸ ì„¤ì •
 	        .formLogin()
-			.loginPage("/user/login") // ·Î±×ÀÎ ÆäÀÌÁö ¼³Á¤
-			.defaultSuccessUrl("/user/login/result") // ·Î±×ÀÎ ¼º°ø ½Ã ÆäÀÌÁö ¼³Á¤
+			.loginPage("/user/login") // ë¡œê·¸ì¸ í˜ì´ì§€ ì„¤ì •
+			.defaultSuccessUrl("/user/login/result") // ë¡œê·¸ì¸ ì„±ê³µ ì‹œ í˜ì´ì§€ ì„¤ì •
 			.permitAll()
-		.and() // ·Î±×¾Æ¿ô ¼³Á¤
+		.and() // ë¡œê·¸ì•„ì›ƒ ì„¤ì •
 			.logout()
-			.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout")) // ·Î±×¾Æ¿ô ÆäÀÌÁö ¼³Á¤
-			.logoutSuccessUrl("/user/logout/result") // ·Î±×¾Æ¿ô ¼º°ø ½Ã ÆäÀÌÁö ¼³Á¤
-			.invalidateHttpSession(true) // Http ¼¼¼Ç ÃÊ±âÈ­
+			.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout")) // ë¡œê·¸ì•„ì›ƒ í˜ì´ì§€ ì„¤ì •
+			.logoutSuccessUrl("/user/logout/result") // ë¡œê·¸ì•„ì›ƒ ì„±ê³µ ì‹œ í˜ì´ì§€ ì„¤ì •
+			.invalidateHttpSession(true) // Http ì„¸ì…˜ ì´ˆê¸°í™”
 		.and()
-			.exceptionHandling().accessDeniedPage("/user/denied"); // 403 ¿¹¿ÜÃ³¸® ÇÚµé¸µ
+			.exceptionHandling().accessDeniedPage("/user/denied"); // 403 ì˜ˆì™¸ì²˜ë¦¬ í•¸ë“¤ë§
 
 	}
 	
+	// AuthenticationManagerBuilderê°€ userServiceì— ìˆëŠ” loadUserByusername ë©”ì†Œë“œë¥¼ í˜¸ì¶œí•˜ì—¬ 
+	// ë°˜í™˜ë°›ì€ UserDetails ê°ì²´ë¥¼ ë‹´ì€ Authentication ê°ì²´ë¥¼ ì „ë‹¬í•  AuthenticationManager ìƒì„±í•œ ë’¤
+	// SecurityContextì— ì €ì¥í•˜ê¸° ìœ„í•´ ë©”ì†Œë“œ ì •ì˜
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 	      auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
-	}
-	
+	}	
 	
 }

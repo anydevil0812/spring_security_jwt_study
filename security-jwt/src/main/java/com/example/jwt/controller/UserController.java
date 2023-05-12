@@ -23,24 +23,24 @@ public class UserController {
 	@Autowired 
 	UserServiceImpl userService;
 
-	 // ¸ŞÀÎ ÆäÀÌÁö
+	// ë©”ì¸ í˜ì´ì§€
     @GetMapping("/")
     public String home() {
         return "home";
     }
 
-    // È¸¿ø°¡ÀÔ ÆäÀÌÁö
+    // íšŒì›ê°€ì… í˜ì´ì§€
     @GetMapping("/user/signup")
     public String dispSignup() {
         return "signup";
     }
 
-    // È¸¿ø°¡ÀÔ Ã³¸®
+    // íšŒì›ê°€ì… ì²˜ë¦¬
     @PostMapping("/user/signup")
     public String execSignup(User user) {
     	List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		if(user.getName().contains("admin")) {
-			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN")); // ADMIN, USER°¡ ¾Æ´Ñ ROLE_ADMIN, ROLE_USER·Î ÀÔ·Â!
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN")); // ADMIN, USERê°€ ì•„ë‹Œ ROLE_ADMIN, ROLE_USERë¡œ ì…ë ¥!
 		} else {
 			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 		}
@@ -50,37 +50,37 @@ public class UserController {
         return "redirect:/user/login";
     }
 
-    // ·Î±×ÀÎ ÆäÀÌÁö
+    // ë¡œê·¸ì¸ í˜ì´ì§€
     @GetMapping("/user/login")
     public String dispLogin() {
         return "login";
     }
 
-    // ·Î±×ÀÎ °á°ú ÆäÀÌÁö
+    // ë¡œê·¸ì¸ ê²°ê³¼ í˜ì´ì§€
     @GetMapping("/user/login/result")
     public String dispLoginResult() {
         return "loginSuccess";
     }
 
-    // ·Î±×¾Æ¿ô °á°ú ÆäÀÌÁö
+    // ë¡œê·¸ì•„ì›ƒ ê²°ê³¼ í˜ì´ì§€
     @GetMapping("/user/logout/result")
     public String dispLogout() {
         return "logout";
     }
 
-    // Á¢±Ù °ÅºÎ ÆäÀÌÁö
+    // ì ‘ê·¼ ê±°ë¶€ í˜ì´ì§€
     @GetMapping("/user/denied")
     public String dispDenied() {
         return "denied";
     }
 
-    // ³» Á¤º¸ ÆäÀÌÁö
+    // ë‚´ ì •ë³´ í˜ì´ì§€
     @GetMapping("/user/myinfo")
     public String dispMyInfo() {
         return "myinfo";
     }
 
-    // ¾îµå¹Î ÆäÀÌÁö
+    // ê´€ë¦¬ì í˜ì´ì§€
     @GetMapping("/admin")
     public String dispAdmin() {
         return "admin";
