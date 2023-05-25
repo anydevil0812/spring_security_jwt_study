@@ -47,28 +47,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable(); // JWT¸¦ »ç¿ëÇÏ±â À§ÇØ CSRF ¹Ì»ç¿ë
+		http.csrf().disable(); // JWTë¥¼ ì‚¬ìš©í•˜ê¸° ìœ„í•´ CSRF ë¯¸ì‚¬ìš©
         
-        http.exceptionHandling() // µû·Î Á¤ÀÇÇÑ exceptionµé Ãß°¡
+        http.exceptionHandling() // ë”°ë¡œ ì •ì˜í•œ exceptionë“¤ ì¶”ê°€
         	.authenticationEntryPoint(jwtAuthenticationEntryPoint)
             .accessDeniedHandler(jwtAccessDeniedHandler)
             
-            .and() // h2-console Á¢±ÙÀ» À§ÇÑ ¼³Á¤
+            .and() // h2-console ì ‘ê·¼ì„ ìœ„í•œ ì„¤ì •
             .headers()
             .frameOptions()
             .sameOrigin()
             
  			.and()
-            .sessionManagement() // ¼¼¼Ç °ü¸® ¼³Á¤
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // ¼¼¼ÇÀ» »ç¿ëÇÏÁö ¾Ê±â ¶§¹®¿¡ STATELESS·Î ¼³Á¤
+            .sessionManagement() // ì„¸ì…˜ ê´€ë¦¬ ì„¤ì •
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // ì„¸ì…˜ì„ ì‚¬ìš©í•˜ì§€ ì•Šê¸° ë•Œë¬¸ì— STATELESSë¡œ ì„¤ì •
             
             .and()
-            .authorizeHttpRequests()  // ÀÎÁõ ÀıÂ÷ ¼³Á¤
-            .antMatchers("/api/hello", "/api/authenticate", "/api/signup").permitAll() // ÀÎÁõ ¾øÀÌ Á¢±Ù °¡´ÉÇÑ ÁÖ¼Ò ¼³Á¤
-            .anyRequest().authenticated() // ¼³Á¤ÇÑ ÀÌ¿ÜÀÇ ÁÖ¼Ò´Â ÀÎÁõ ¿ä±¸
+            .authorizeHttpRequests()  // ì¸ì¦ ì ˆì°¨ ì„¤ì •
+            .antMatchers("/api/hello", "/api/authenticate", "/api/signup").permitAll() // ì¸ì¦ ì—†ì´ ì ‘ê·¼ ê°€ëŠ¥í•œ ì£¼ì†Œ ì„¤ì •
+            .anyRequest().authenticated() // ì„¤ì •í•œ ì´ì™¸ì˜ ì£¼ì†ŒëŠ” ì¸ì¦ ìš”êµ¬
             
             .and()
-            .apply(new JwtSecurityConfig(tokenProvider)); // spring security ±¸¼º¿¡ JwtFilter µî·Ï
+            .apply(new JwtSecurityConfig(tokenProvider)); // spring security êµ¬ì„±ì— JwtFilter ë“±ë¡
 	}
 	
 }

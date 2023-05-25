@@ -37,10 +37,10 @@ public class TokenProvider implements InitializingBean {
    @Override
    public void afterPropertiesSet() {
       byte[] keyBytes = Decoders.BASE64.decode(secret);
-      this.key = Keys.hmacShaKeyFor(keyBytes); // Keys.hmacShaKeyFor() = È¯°æ¼³Á¤¿¡ ÀÖ´Â ºñ¹ĞÅ° ¹®ÀÚ¿­À» byte[]·Î Àü´ŞÇÏ¸ç SecretKey ÀÎ½ºÅÏ½º »ı¼º
+      this.key = Keys.hmacShaKeyFor(keyBytes); // Keys.hmacShaKeyFor() = í™˜ê²½ì„¤ì •ì— ìˆëŠ” ë¹„ë°€í‚¤ ë¬¸ìì—´ì„ byte[]ë¡œ ì „ë‹¬í•˜ë©° SecretKey ì¸ìŠ¤í„´ìŠ¤ ìƒì„±
    }
    
-   // ÅäÅ« »ı¼º
+   // í† í° ìƒì„±
    public String createToken(Authentication authentication) {
       String authorities = authentication.getAuthorities().stream()
          .map(GrantedAuthority::getAuthority)
@@ -50,21 +50,21 @@ public class TokenProvider implements InitializingBean {
       Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
       return Jwts.builder()
-         .setSubject(authentication.getName()) // ÅäÅ« Á¦¸ñ ¼³Á¤
-         .claim(AUTHORITIES_KEY, authorities) // payload¿¡ ´ãÀ» claim(key:value µ¥ÀÌÅÍ) ¼³Á¤
-         .signWith(key, SignatureAlgorithm.HS512) // »ç¿ëÇÒ ¾ÏÈ£È­ ¾Ë°í¸®Áò(HS256) ¹× signature¿¡ µé¾î°¥ secret key ¼³Á¤
-         .setExpiration(validity) // À¯È¿±â°£ ¼³Á¤
+         .setSubject(authentication.getName()) // í† í° ì œëª© ì„¤ì •
+         .claim(AUTHORITIES_KEY, authorities) // payloadì— ë‹´ì„ claim(key:value ë°ì´í„°) ì„¤ì •
+         .signWith(key, SignatureAlgorithm.HS512) // ì‚¬ìš©í•  ì•”í˜¸í™” ì•Œê³ ë¦¬ì¦˜(HS256) ë° signatureì— ë“¤ì–´ê°ˆ secret key ì„¤ì •
+         .setExpiration(validity) // ìœ íš¨ê¸°ê°„ ì„¤ì •
          .compact(); 
    }
    
-   // builder = jwt »ı¼º(ÀÎÄÚµù), parserBuilder = jwt °ËÁõ(µğÄÚµù)
+   // builder = jwt ìƒì„±(ì¸ì½”ë”©), parserBuilder = jwt ê²€ì¦(ë””ì½”ë”©)
    public Authentication getAuthentication(String token) {
       Claims claims = Jwts
-              .parserBuilder() // JwtParseBuilder ÀÎ½ºÅÏ½º »ı¼º
-              .setSigningKey(key) // °ËÁõÀ» À§ÇÑ key ÁöÁ¤
-              .build() // jwtParser ¹İÈ¯
-              .parseClaimsJws(token) // ÅäÅ«À» Jws·Î ÆÄ½Ì
-              .getBody(); // ÅäÅ«¿¡ ÀúÀåÇß´ø dataµéÀÌ ´ã±ä Claims ¹İÈ¯ 
+              .parserBuilder() // JwtParseBuilder ì¸ìŠ¤í„´ìŠ¤ ìƒì„±
+              .setSigningKey(key) // ê²€ì¦ì„ ìœ„í•œ key ì§€ì •
+              .build() // jwtParser ë°˜í™˜
+              .parseClaimsJws(token) // í† í°ì„ Jwsë¡œ íŒŒì‹±
+              .getBody(); // í† í°ì— ì €ì¥í–ˆë˜ dataë“¤ì´ ë‹´ê¸´ Claims ë°˜í™˜ 
 
       Collection<? extends GrantedAuthority> authorities =
          Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
@@ -73,23 +73,23 @@ public class TokenProvider implements InitializingBean {
 
       User principal = new User(claims.getSubject(), "", authorities);
       
-      //  UsernamePasswordAuthenticationToken = Authentication ÀÎÅÍÆäÀÌ½ºÀÇ ±¸ÇöÃ¼ (Authentication °´Ã¼ÀÇ ÀÏÁ¾)
-      return new UsernamePasswordAuthenticationToken(principal, token, authorities); // tokenÀÌ credentials(Password·Î µé¾î°¨)
+      //  UsernamePasswordAuthenticationToken = Authentication ì¸í„°í˜ì´ìŠ¤ì˜ êµ¬í˜„ì²´ (Authentication ê°ì²´ì˜ ì¼ì¢…)
+      return new UsernamePasswordAuthenticationToken(principal, token, authorities); // tokenì´ credentials(Passwordë¡œ ë“¤ì–´ê°)
    }
    
-   // ÅäÅ« °ËÁõ
+   // í† í° ê²€ì¦
    public boolean validateToken(String token) {
       try {
          Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
          return true;
       } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-         logger.info("Àß¸øµÈ JWT ¼­¸íÀÔ´Ï´Ù.");
+         logger.info("ì˜ëª»ëœ JWT ì„œëª…ì…ë‹ˆë‹¤.");
       } catch (ExpiredJwtException e) {
-         logger.info("¸¸·áµÈ JWT ÅäÅ«ÀÔ´Ï´Ù.");
+         logger.info("ë§Œë£Œëœ JWT í† í°ì…ë‹ˆë‹¤.");
       } catch (UnsupportedJwtException e) {
-         logger.info("Áö¿øµÇÁö ¾Ê´Â JWT ÅäÅ«ÀÔ´Ï´Ù.");
+         logger.info("ì§€ì›ë˜ì§€ ì•ŠëŠ” JWT í† í°ì…ë‹ˆë‹¤.");
       } catch (IllegalArgumentException e) {
-         logger.info("JWT ÅäÅ«ÀÌ Àß¸øµÇ¾ú½À´Ï´Ù.");
+         logger.info("JWT í† í°ì´ ì˜ëª»ë˜ì—ˆìŠµë‹ˆë‹¤.");
       }
       return false;
    }

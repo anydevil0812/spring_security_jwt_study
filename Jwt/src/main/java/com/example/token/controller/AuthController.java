@@ -33,14 +33,15 @@ public class AuthController {
     @PostMapping("/authenticate")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
     	
-    	// ID�� Password ������� ��ū ����
+    	// ID와 Password 기반으로 토큰 생성
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-
+        
+        // authenticate() 실행 시 loadUserByUsername 메소드가 자동 실행되어 유저에 대한 검증을 한 후 인증이 완료되면 Authentication 객체 생성
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         
-        // ��ū ����
+        // 토큰 생성
         String jwt = tokenProvider.createToken(authentication);
 
         HttpHeaders httpHeaders = new HttpHeaders();

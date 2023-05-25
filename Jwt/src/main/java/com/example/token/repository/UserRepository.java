@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.token.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-	   @EntityGraph(attributePaths = "authorities") // Eager Á¶È¸·Î authorities¸¦ °¡Á®¿Àµµ·Ï ¼³Á¤
+	   @EntityGraph(attributePaths = "authorities") // Eager ì¡°íšŒë¡œ authoritiesë¥¼ ê°€ì ¸ì˜¤ë„ë¡ ì„¤ì •
 	   Optional<User> findOneWithAuthoritiesByUsername(String username);
 }

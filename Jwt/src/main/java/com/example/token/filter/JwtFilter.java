@@ -24,28 +24,28 @@ public class JwtFilter extends GenericFilterBean {
 	      this.tokenProvider = tokenProvider;
 	   }
 	   
-	   // usernamePasswordAuthentication ÇÊÅÍ
-	   // ÅäÅ«À» ¹Ş¾Æ¿È => ÅäÅ«À¸·Î Authencation °´Ã¼¸¦ ¾òÀ½ => SecurityContext¿¡ Authentication °´Ã¼¿¡ ÀúÀå
+	   // usernamePasswordAuthentication í•„í„°
+	   // í† í°ì„ ë°›ì•„ì˜´ => í† í°ìœ¼ë¡œ Authencation ê°ì²´ë¥¼ ì–»ìŒ => SecurityContextì— Authentication ê°ì²´ì— ì €ì¥
 	   @Override
 	   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 	      HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-	      String jwt = resolveToken(httpServletRequest); // ÅäÅ«À» ¾ò¾î¿È
+	      String jwt = resolveToken(httpServletRequest); // í† í°ì„ ì–»ì–´ì˜´
 	      String requestURI = httpServletRequest.getRequestURI();
 
 	      if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-	         Authentication authentication = tokenProvider.getAuthentication(jwt); // ÅäÅ«À¸·Î Authentication °´Ã¼ ¾ò¾î¿È
+	         Authentication authentication = tokenProvider.getAuthentication(jwt); // í† í°ìœ¼ë¡œ Authentication ê°ì²´ ì–»ì–´ì˜´
 	         
-	         // SecurityContextHolder¸¦ ÅëÇØ SecurityContext¿¡ Authentication °´Ã¼ ÀúÀå
+	         // SecurityContextHolderë¥¼ í†µí•´ SecurityContextì— Authentication ê°ì²´ ì €ì¥
 	         SecurityContextHolder.getContext().setAuthentication(authentication);  
 	         
-	         logger.debug("Security Context¿¡ '{}' ÀÎÁõ Á¤º¸¸¦ ÀúÀåÇß½À´Ï´Ù, uri: {}", authentication.getName(), requestURI);
+	         logger.debug("Security Contextì— '{}' ì¸ì¦ ì •ë³´ë¥¼ ì €ì¥í–ˆìŠµë‹ˆë‹¤, uri: {}", authentication.getName(), requestURI);
 	      } else {
-	         logger.debug("À¯È¿ÇÑ JWT ÅäÅ«ÀÌ ¾ø½À´Ï´Ù, uri: {}", requestURI);
+	         logger.debug("ìœ íš¨í•œ JWT í† í°ì´ ì—†ìŠµë‹ˆë‹¤, uri: {}", requestURI);
 	      }
-	      filterChain.doFilter(servletRequest, servletResponse); // FilterChainÀ¸·Î ¿©·¯°³ÀÇ ÇÊÅÍ°¡ ÀÖÀ¸¹Ç·Î Àç±Í Àû¿ë
+	      filterChain.doFilter(servletRequest, servletResponse); // FilterChainìœ¼ë¡œ ì—¬ëŸ¬ê°œì˜ í•„í„°ê°€ ìˆìœ¼ë¯€ë¡œ ì¬ê·€ ì ìš©
 	   }
 	   
-	   // ÅäÅ« ¹İÈ¯
+	   // í† í° ë°˜í™˜
 	   private String resolveToken(HttpServletRequest request) {
 	      String bearerToken = request.getHeader("Authorization");
 
