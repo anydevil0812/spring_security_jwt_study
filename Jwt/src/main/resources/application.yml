@@ -1,0 +1,31 @@
+spring:
+
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    url: jdbc:h2:mem:testdb # H2-console 접속 시 JDBC URL
+    driver-class-name: org.h2.Driver
+    username: anydevil # localhost:8080/h2-console 접속 시 User Name
+    password: 1234 # localhost:8080/h2-console 접속 시 Password
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true # sping 버전 2.5 이후부터는 data.sql을 위해 입력 필요 
+
+logging:
+  level:
+    com.example.token: DEBUG
+
+jwt:
+    header: Authorization
+    #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 함
+    secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+    token-valid-time: 86400
